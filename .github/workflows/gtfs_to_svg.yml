@@ -40,6 +40,6 @@ jobs:
         run: |
           git config user.name "GTFS to SVG"
           git config user.email "invalid@invalid.invalid"
-          git add ${{ inputs.gtfs_source }}.svg
+          git add ${{ inputs.transit_agency }}.svg
           git commit -m "$(date)" || exit 0
           git push

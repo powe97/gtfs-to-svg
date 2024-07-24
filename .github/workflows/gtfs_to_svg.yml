@@ -34,7 +34,7 @@ jobs:
 
       - name: Convert to SVG
         run: |
-          python geojson_to_svg_polyline.py -i geojson -o ${{ inputs.gtfs_source }}.svg
+          python geojson_to_svg.py -i geojson -o ${{ inputs.gtfs_source }}.svg
 
       - name: Commit file
         run: |

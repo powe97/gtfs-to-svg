@@ -1,0 +1,43 @@
+name: Generate SVG from GTFS
+
+on:
+  workflow_dispatch:
+    inputs:
+      transit_agency:
+        type: string
+        description: Name of transit agency
+      gtfs_source:
+        type: string
+        description: URL to GTFS zip file
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+      - name: Install requirements
+        run: |
+          
+      - name: Fetch CDTA GTFS
+        run: |
+          wget ${{ inputs.gtfs_source }}
+          unzip *.zip -d gtfs
+
+      - name: Convert to GeoJSON
+        run: |
+          python generate_route_shapes.py -i gtfs -o geojson
+
+      - name: Convert to SVG
+        run: |
+          python geojson_to_svg_polyline.py -i geojson -o ${{ inputs.gtfs_source }}.svg
+
+      - name: Commit file
+        run: |
+          git config user.name "GTFS to SVG"
+          git config user.email "invalid@invalid.invalid"
+          git add ${{ inputs.gtfs_source }}.svg
+          git commit -m "$(date)" || exit 0
+          git push

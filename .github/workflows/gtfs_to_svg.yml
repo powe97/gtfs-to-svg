@@ -1,4 +1,5 @@
 name: Generate SVG from GTFS
+run-name: ${{ inputs.transit_agency }}
 
 on:
   workflow_dispatch:
@@ -20,6 +21,7 @@ jobs:
           python-version: '3.10' 
       - name: Install requirements
         run: |
+          pip install -r requirements.txt
           
       - name: Fetch CDTA GTFS
         run: |

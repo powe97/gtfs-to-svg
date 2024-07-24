@@ -1,13 +1,7 @@
 import os
-import utm
-import sys
-import xml
 import json
 import math
-import pathlib
 import argparse
-import geojson
-import xml
 import xml.etree.cElementTree as ET
 import collections
 

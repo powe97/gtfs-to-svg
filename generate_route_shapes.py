@@ -17,8 +17,6 @@
 #     LineString in the MultiLineString
 
 import os
-import sys
-import json
 import pathlib
 import argparse
 import pandas as pd

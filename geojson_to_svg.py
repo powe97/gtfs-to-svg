@@ -63,7 +63,9 @@ def geojsons_to_svg(routes):
 
     colors = collections.defaultdict(list)
     for route, color in {
-        route["properties"]["route_id"]: route["properties"].get("route_color", "000000")
+        route["properties"]["route_id"]: route["properties"].get(
+            "route_color", "000000"
+        )
         for route in routes
     }.items():
         colors[color].append(route)

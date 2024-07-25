@@ -32,9 +32,7 @@ def read_gtfs(gtfs_dir):
     # stop_times = pd.read_csv(os.path.join(gtfs_dir, "stop_times.txt"))
 
     routes_trips = pd.merge(routes, trips, on="route_id", how="inner")
-    routes_trips_shapes = pd.merge(
-        routes_trips, shapes, on="shape_id", how="inner"
-    )
+    routes_trips_shapes = pd.merge(routes_trips, shapes, on="shape_id", how="inner")
 
     return (
         shapes,
@@ -51,7 +49,9 @@ def read_gtfs(gtfs_dir):
                 }
             ),
             axis=1,
-        ).drop_duplicates(),
+        )
+        .drop_duplicates()
+        .dropna(axis=1, how="all"),
     )
 
 
@@ -122,9 +122,7 @@ def route_to_shape(route_id, shapes, routes_trip_shapes):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Generate GeoJSON from GTFS dir."
-    )
+    parser = argparse.ArgumentParser(description="Generate GeoJSON from GTFS dir.")
     parser.add_argument("-i", "--in-dir", required=True)
     parser.add_argument("-o", "--out-dir", required=True)
     args = parser.parse_args()
@@ -132,9 +130,7 @@ if __name__ == "__main__":
     shapes, routes, routes_trips_shapes = read_gtfs(args.in_dir)
     pathlib.Path(args.out_dir).mkdir(parents=True, exist_ok=True)
     for route_id in routes_trips_shapes["route_id"].unique():
-        with open(
-            os.path.join(args.out_dir, f"{route_id}.geojson"), "w"
-        ) as outfile:
+        with open(os.path.join(args.out_dir, f"{route_id}.geojson"), "w") as outfile:
             gj.dump(
                 route_to_shape(route_id, shapes, routes_trips_shapes),
                 outfile,
